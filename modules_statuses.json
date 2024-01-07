@@ -1,0 +1,14 @@
+{
+    "Article": true,
+    "Tag": true,
+    "Comment": true,
+    "Category": true,
+    "Website": true,
+    "Order": true,
+    "Service": true,
+    "Providerprofile": true,
+    "Factor": true,
+    "Payment": true,
+    "Verify": true,
+    "Code": true
+}

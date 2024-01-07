@@ -1,0 +1,13 @@
+{
+    "name": "Providerprofile",
+    "alias": "providerprofile",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Providerprofile\\Providers\\ProviderprofileServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

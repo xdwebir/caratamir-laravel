@@ -1,0 +1,13 @@
+{
+    "name": "Verify",
+    "alias": "verify",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Verify\\Providers\\VerifyServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
