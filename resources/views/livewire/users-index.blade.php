@@ -7,8 +7,7 @@
                 <table class="table table-hover table-responsive-sm" wire:loading.class="table-secondary">
                     <thead>
                         <tr>
-                            <th>{{ __('labels.backend.users.fields.name') }}</th>
-                            <th>{{ __('labels.backend.users.fields.email') }}</th>
+                            <th>موبایل</th>
                             <th>{{ __('labels.backend.users.fields.status') }}</th>
                             <th>{{ __('labels.backend.users.fields.roles') }}</th>
                             <th>{{ __('labels.backend.users.fields.permissions') }}</th>
@@ -20,14 +19,8 @@
                     <tbody>
                         @foreach ($users as $user)
                         <tr>
-                            <td>
-                                <strong>
-                                    <a href="{{route('backend.users.show', $user->id)}}">
-                                        {{ $user->name }}
-                                    </a>
-                                </strong>
-                            </td>
-                            <td>{{ $user->email }}</td>
+
+                            <td>{{ $user->mobile }}</td>
                             <td>
                                 {!! $user->status_label !!}
                                 {!! $user->confirmed_label !!}
