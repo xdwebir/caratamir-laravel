@@ -46,8 +46,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>{{ __('labels.backend.users.fields.name') }}</th>
-                                <th>{{ __('labels.backend.users.fields.email') }}</th>
+                                <th>موبایل</th>
                                 <th>{{ __('labels.backend.users.fields.status') }}</th>
                                 <th>{{ __('labels.backend.users.fields.roles') }}</th>
                                 <th class="text-end">{{ __('labels.backend.action') }}</th>
@@ -97,12 +96,8 @@
                 name: 'id'
             },
             {
-                data: 'name',
-                name: 'name'
-            },
-            {
-                data: 'email',
-                name: 'email'
+                data: 'mobile',
+                name: 'mobile'
             },
             {
                 data: 'status',

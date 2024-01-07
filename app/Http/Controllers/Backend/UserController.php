@@ -95,7 +95,7 @@ class UserController extends Controller
 
         $module_action = 'List';
 
-        $$module_name = $module_model::select('id', 'name', 'username', 'email', 'email_verified_at', 'updated_at', 'status');
+        $$module_name = $module_model::select('id', 'mobile', 'email_verified_at', 'updated_at', 'status');
 
         $data = $$module_name;
 
@@ -110,7 +110,6 @@ class UserController extends Controller
 
                 return view('backend.includes.user_roles', compact('module_name', 'data'));
             })
-            ->editColumn('name', '<strong>{{$name}}</strong>')
             ->editColumn('status', function ($data) {
                 $return_data = $data->status_label;
                 $return_data .= '<br>'.$data->confirmed_label;
@@ -128,7 +127,7 @@ class UserController extends Controller
                     return $data->updated_at->isoFormat('LLLL');
                 }
             })
-            ->rawColumns(['name', 'action', 'status', 'user_roles'])
+            ->rawColumns([ 'action', 'status', 'user_roles'])
             ->orderColumns(['id'], '-:column $1')
             ->make(true);
     }
@@ -158,7 +157,7 @@ class UserController extends Controller
             return response()->json([]);
         }
 
-        $query_data = $module_model::where('name', 'LIKE', "%$term%")->orWhere('email', 'LIKE', "%$term%")->limit(10)->get();
+        $query_data = $module_model::where('mobile', 'LIKE', "%$term%")->limit(10)->get();
 
         $$module_name = [];
 
