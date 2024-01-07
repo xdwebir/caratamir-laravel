@@ -18,6 +18,7 @@ Route::prefix('v1')->group(function () {
 
 
     Route::group(['middleware' => ['auth:sanctum', 'can:view_frontend_accountant'],'prefix'=>'accountant'], function () {
+        Route::get('paymentshistory',[Modules\Payment\Http\Controllers\API\Accountant\PaymentsController::class,'paymentsHistory']);
         Route::get('confirmpayment',[Modules\Payment\Http\Controllers\API\Accountant\PaymentsController::class,'confirmPaymentList']);
         Route::get('payment/{id?}',[Modules\Payment\Http\Controllers\API\Accountant\PaymentsController::class,'getPayment']);
         Route::delete('payment/{id?}',[Modules\Payment\Http\Controllers\API\Accountant\PaymentsController::class,'deletePayment']);
