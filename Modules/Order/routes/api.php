@@ -22,6 +22,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::group(['middleware' => ['auth:sanctum', 'can:view_frontend_operator'],'prefix'=>'operator'], function () {
+        Route::get('ordershistory',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'ordersHistory']);
         Route::get('waitingorders',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'waitingOrders']);
         Route::get('waitingorders/{id?}',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'waitingOrderItem']);
         Route::get('availableproviders/{id?}',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'availableProviders']);
