@@ -47,10 +47,10 @@ class OrdersController extends Controller
 
         $orders = QueryBuilder::for(Order::class)
             ->where('orders.user_id', '=', Auth()->user()->id)
-            ->select(['orders.id as id','orders.mobile as mobile', 'orders.address as address','orders.status as status','orders.price as price','services.name as service_name'])
+            ->select(['orders.id as id','orders.mobile as mobile', 'orders.address as address','orders.status as status','orders.price as price','services.name as service_name','providerprofiles.address as provider_address','users.mobile as provider_mobile','users.first_name as provider_first_name','users.last_name as provider_last_name'])
             ->join("services","orders.service_id","services.id")
-            // ->join("providerprofiles", "orders.provider_id", "providerprofiles.user_id")
-            // ->join("users","providerprofiles.user_id","users.id")
+            ->leftjoin("providerprofiles", "orders.provider_id", "providerprofiles.user_id")
+            ->leftjoin("users","providerprofiles.user_id","users.id")
             ->defaultSort('-id')
             ->paginate(10);
 
