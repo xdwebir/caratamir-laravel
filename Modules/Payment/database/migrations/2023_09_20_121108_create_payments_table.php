@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->integer('user_id')->unsigned();  // provider ID
-            $table->integer('accountant_id')->unsigned();
+            $table->integer('accountant_id')->unsigned()->nullable();
             $table->bigInteger('amount');
             $table->string('date');
             $table->string('tracking_code');

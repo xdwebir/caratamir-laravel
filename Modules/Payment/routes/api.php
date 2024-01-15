@@ -27,6 +27,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::group(['middleware' => ['auth:sanctum', 'can:view_frontend_service_provider'],'prefix'=>'provider'], function () {
+        Route::post('debt',[Modules\Payment\Http\Controllers\API\Provider\PaymentsController::class,'debt']);
         Route::post('addpayment',[Modules\Payment\Http\Controllers\API\Provider\PaymentsController::class,'addPayment']);
         Route::get('paymentshistory',[Modules\Payment\Http\Controllers\API\Provider\PaymentsController::class,'paymentsHistory']);
     });

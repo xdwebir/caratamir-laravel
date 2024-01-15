@@ -18,7 +18,7 @@ class ProviderprofilesController extends Controller
     $profile = QueryBuilder::for(Providerprofile::class)
     ->where('user_id', '=', Auth()->user()->id)
     ->join('services', 'services.id', 'providerprofiles.service_id')
-    ->select(['city_name', 'state_name','start_time','end_time','services.name as service_name'])
+    ->select(['city_name', 'state_name','start_time','end_time','services.name as service_name','address'])
     ->first();
     if($profile){
         $profile->status = 1;
@@ -37,6 +37,8 @@ class ProviderprofilesController extends Controller
         'service_id' => ['required'],
         'start_time' => ['required'],
         'end_time' => ['required'],
+        'address' => ['required'],
+
     ]);
 
     $profile = Providerprofile::where('user_id','=',Auth()->user()->id)->first();
@@ -48,6 +50,8 @@ class ProviderprofilesController extends Controller
         $profile->state_name = $request->state_name;
         $profile->start_time = $request->start_time;
         $profile->end_time = $request->end_time;
+        $profile->address = $request->address;
+
         $profile->save();
     }else{
         $validatedData['user_id'] = Auth()->user()->id;

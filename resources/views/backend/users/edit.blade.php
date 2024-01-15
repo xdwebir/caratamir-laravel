@@ -31,24 +31,7 @@
         <div class="col">
             {{ html()->modelForm($user, 'PATCH', route('backend.users.update', $user->id))->class('form-horizontal')->open() }}
 
-            <div class="row mb-3">
-                <?php
-                $field_name = 'email';
-                $field_lable = __('labels.backend.users.fields.email');
-                $field_placeholder = $field_lable;
-                $required = "required";
-                ?>
-                <div class="col-12 col-sm-2">
-                    <div class="form-group">
-                        {{ html()->label($field_lable, $field_name)->class('form-label') }} {!! fielf_required($required) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-sm-10">
-                    <div class="form-group">
-                        {{ html()->text($field_name)->placeholder($field_placeholder)->class('form-control')->attributes(["$required"]) }}
-                    </div>
-                </div>
-            </div>
+
 
             <div class="row mb-3">
                 <?php

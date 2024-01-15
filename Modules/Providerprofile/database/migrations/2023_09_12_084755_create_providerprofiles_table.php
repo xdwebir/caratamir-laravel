@@ -25,6 +25,10 @@ return new class extends Migration
             $table->string('end_time');
             $table->integer('service_id')->unsigned();
 
+            $table->text('address');
+            $table->string('lat')->nullable();
+            $table->string('lon')->nullable();
+            
             $table->string('name');
             $table->string('slug')->nullable();
             $table->text('description')->nullable();

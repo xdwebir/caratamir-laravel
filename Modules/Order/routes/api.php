@@ -26,6 +26,7 @@ Route::prefix('v1')->group(function () {
         Route::get('waitingorders',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'waitingOrders']);
         Route::get('waitingorders/{id?}',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'waitingOrderItem']);
         Route::get('availableproviders/{id?}',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'availableProviders']);
+        Route::post('deleteorder/{id?}',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'deleteOrder']);
         Route::post('assignprovidertoorder',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'assignProviderToOrder']);
     });
 

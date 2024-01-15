@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laracasts\Flash\Flash;
+use Modules\Factor\Models\Factor;
 use Modules\Payment\Models\Payment;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -48,5 +49,14 @@ class PaymentsController extends Controller
     }
 
     return $payments;
+   }
+   public function debt(){
+    $sumpayed = Payment::where('status','=',1)
+    ->where('user_id', '=' ,Auth()->user()->id)
+    ->sum('amount');
+    $sumtopay = Factor::where('user_id','=',Auth()->user()->id)->sum('amount');
+
+    $sumpay = $sumtopay - $sumpayed;
+    return ['debt'=> $sumpay];
    }
 }

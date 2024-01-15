@@ -27,8 +27,8 @@ return new class extends Migration
             $table->string('state_id');
             $table->string('mobile');
             $table->text('address');
-            $table->double('lat')->nullable();
-            $table->double('lon')->nullable();
+            $table->string('lat')->nullable();
+            $table->string('lon')->nullable();
 
 
             $table->tinyInteger('status')->default(0);//0:waiting 1:in-progress 2:done 3:payed

@@ -111,7 +111,9 @@ class UserController extends Controller
 
         $meta_page_type = 'profile';
 
-        $sumpayed = Payment::where('status','=',1)->sum('amount');
+        $sumpayed = Payment::where('status','=',1)
+        ->where('user_id', '=' ,Auth()->user()->id)
+        ->sum('amount');
         $sumtopay = Factor::where('user_id','=',Auth()->user()->id)->sum('amount');
 
         $sumpay = $sumtopay - $sumpayed;
