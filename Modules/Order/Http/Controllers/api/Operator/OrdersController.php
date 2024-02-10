@@ -53,7 +53,7 @@ class OrdersController extends Controller
             ->select('users.*', 'providerprofiles.*', 'users.id as id', 'services.name as service_name',  'providerprofiles.name as providerprofilename');
 
         $providers = QueryBuilder::for($query)
-            ->select('users.id', 'first_name', 'last_name', 'mobile', 'city_name', 'state_name', 'start_time', 'end_time', 'services.name as service_name','address')
+            ->select('users.id', 'first_name', 'last_name', 'mobile', 'city_name', 'state_name', 'start_time', 'end_time', 'services.name as service_name', 'address')
             ->paginate(10);
 
         return $providers;
@@ -66,10 +66,10 @@ class OrdersController extends Controller
             'order_id' => ['required'],
         ]);
 
-        $provider = User::where('users.id','=',$request->provider_id)
-        ->join('providerprofiles','users.id','=','providerprofiles.user_id')
-        ->select('users.*', 'providerprofiles.address as address')
-        ->first();
+        $provider = User::where('users.id', '=', $request->provider_id)
+            ->join('providerprofiles', 'users.id', '=', 'providerprofiles.user_id')
+            ->select('users.*', 'providerprofiles.address as address')
+            ->first();
         $order = Order::findOrFail($request->order_id);
         $customer = User::findOrFail($order->user_id);
         if ($order->provider_id == null) {
@@ -107,13 +107,58 @@ class OrdersController extends Controller
             abort(404);
         }
     }
+    public function assignProviderToOrderEdit(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'provider_id' => ['required'],
+            'order_id' => ['required'],
+        ]);
+
+        $provider = User::where('users.id', '=', $request->provider_id)
+            ->join('providerprofiles', 'users.id', '=', 'providerprofiles.user_id')
+            ->select('users.*', 'providerprofiles.address as address')
+            ->first();
+        $order = Order::findOrFail($request->order_id);
+        $customer = User::findOrFail($order->user_id);
+        $order->provider_id = $provider->id;
+        $order->status = 1;
+        $order->operator_id = Auth()->user()->id;
+        $order->save();
+
+        if (env("SMS_ACTIVE")) {
+            $customer_message = "مشتری گرامی خدمت رسان شما ";
+            $customer_message .= $provider->first_name;
+            $customer_message .= " ";
+            $customer_message .= $provider->last_name;
+            $customer_message .= " با شماره ";
+            $customer_message .= $provider->mobile;
+            $customer_message .= " و آدرس ";
+            $customer_message .= $provider->address;
+            $customer_message .= " می باشد. caratamir.ir";
+
+            $provider_message = "خدمت رسان گرامی مشتری شما ";
+            $provider_message .= $customer->first_name;
+            $provider_message .= " ";
+            $provider_message .= $customer->last_name;
+            $provider_message .= " با شماره ";
+            $provider_message .= $order->mobile;
+            $provider_message .= " و آدرس ";
+            $provider_message .= $order->address;
+            $provider_message .= " می باشد. caratamir.ir";
+
+            RayganSms::sendMessage($order->mobile, $customer_message);
+            RayganSms::sendMessage($provider->mobile, $provider_message);
+        }
+        return ['status' => 1];
+    }
     public function ordersHistory()
     {
         $query = Order::where('operator_id', '=', Auth()->user()->id)
             ->join('services', 'orders.service_id', '=', 'services.id')
             ->join('users', 'orders.provider_id', '=', 'users.id')
-            ->join('providerprofiles', 'orders.provider_id' ,'providerprofiles.user_id')
-            ->select('orders.id','orders.user_id','orders.provider_id','orders.price','orders.city_name','orders.mobile','orders.address','orders.status', 'services.name as service_name', 'users.mobile as provider_mobile','providerprofiles.address as provider_address')
+            ->join('providerprofiles', 'orders.provider_id', 'providerprofiles.user_id')
+            ->select('orders.id', 'orders.user_id', 'orders.provider_id', 'orders.price', 'orders.city_name', 'orders.mobile', 'orders.address', 'orders.status', 'services.name as service_name', 'users.mobile as provider_mobile', 'providerprofiles.address as provider_address')
             ->orderBy('orders.id', 'desc');
 
         $orders = QueryBuilder::for($query)
@@ -133,11 +178,12 @@ class OrdersController extends Controller
         return $orders;
     }
 
-    public function deleteOrder($id){
+    public function deleteOrder($id)
+    {
         $order = Order::findOrFail($id);
         $order->operator_id = Auth()->user()->id;
         $order->status = 3;
         $order->save();
-        return ["status"=>1];
+        return ["status" => 1];
     }
 }

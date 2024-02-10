@@ -19,6 +19,7 @@ Route::prefix('v1')->group(function () {
     Route::group(['middleware' => ['auth:sanctum', 'can:view_frontend_customer'],'prefix'=>'customer'], function () {
         Route::post('addorder',[OrdersController::class,'store']);
         Route::get('allorder',[OrdersController::class,'all']);
+        Route::get('allorderforcards',[OrdersController::class,'allcards']);
     });
 
     Route::group(['middleware' => ['auth:sanctum', 'can:view_frontend_operator'],'prefix'=>'operator'], function () {
@@ -28,6 +29,7 @@ Route::prefix('v1')->group(function () {
         Route::get('availableproviders/{id?}',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'availableProviders']);
         Route::post('deleteorder/{id?}',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'deleteOrder']);
         Route::post('assignprovidertoorder',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'assignProviderToOrder']);
+        Route::post('assignprovidertoorderedit',[Modules\Order\Http\Controllers\api\Operator\OrdersController::class,'assignProviderToOrderEdit']);
     });
 
     Route::group(['middleware' => ['auth:sanctum', 'can:view_frontend_service_provider'],'prefix'=>'provider'], function () {
