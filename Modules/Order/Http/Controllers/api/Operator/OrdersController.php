@@ -45,16 +45,33 @@ class OrdersController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        $query = User::role('service provider')
+        $providers = User::role('service provider')
             ->join('providerprofiles', 'users.id', '=', 'providerprofiles.user_id')
-            ->join('services', 'providerprofiles.service_id', '=', 'services.id')
             ->where('providerprofiles.city_id', '=', $order->city_id)
-            ->where('providerprofiles.service_id', '=', $order->service_id)
-            ->select('users.*', 'providerprofiles.*', 'users.id as id', 'services.name as service_name',  'providerprofiles.name as providerprofilename');
+            ->select('users.id', 'users.first_name', 'users.last_name', 'users.mobile', 'city_name', 'state_name', 'start_time', 'end_time', 'address','services_id')
+            ->get();
 
-        $providers = QueryBuilder::for($query)
-            ->select('users.id', 'first_name', 'last_name', 'mobile', 'city_name', 'state_name', 'start_time', 'end_time', 'services.name as service_name', 'address')
-            ->paginate(10);
+        // $providers = QueryBuilder::for($query)
+        // ->select('users.id', 'users.first_name', 'users.last_name', 'users.mobile', 'city_name', 'state_name', 'start_time', 'end_time', 'address')
+        // ->get();
+
+        foreach ($providers as $key => $provider) {
+            $services_id = json_decode($provider->services_id, true);
+            if (in_array($order->service_id, $services_id) != true) {
+                $providers->forget($key);
+            }
+        }
+        foreach ($providers as $provider) {
+            $services_id = json_decode($provider->services_id, true);
+            $provider->services_name = "";
+            foreach ($services_id as $service_id) {
+                $provider->services_name .= Service::findOrFail($service_id)->name;
+                $provider->services_name .= ", ";
+            }
+        }
+
+
+
 
         return $providers;
     }

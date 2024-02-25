@@ -23,12 +23,12 @@ return new class extends Migration
             $table->string('state_id');
             $table->string('start_time');
             $table->string('end_time');
-            $table->integer('service_id')->unsigned();
+            $table->string('services_id');
 
             $table->text('address');
             $table->string('lat')->nullable();
             $table->string('lon')->nullable();
-            
+
             $table->string('name');
             $table->string('slug')->nullable();
             $table->text('description')->nullable();
